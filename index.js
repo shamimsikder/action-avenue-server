@@ -35,7 +35,21 @@ async function run() {
 
     const toysCollection = client.db('actionAvenue').collection('toys')
 
-   
+    app.get('/all-toys', async(req, res) => {
+
+      const cursor = toysCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+
+    })
+
+
+    app.post('/all-toys', async (req, res) => {
+      const toys = req.body;
+      console.log(toys);
+      const result = await toysCollection.insertOne(toys);
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
