@@ -28,7 +28,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    //await client.connect();
 
     const toysCollection = client.db('actionAvenue').collection('toys')
 
@@ -37,6 +37,7 @@ async function run() {
       const cursor = toysCollection.find()
       const result = await cursor.toArray()
       res.send(result)
+      console.log(result)
 
     })
 
@@ -65,6 +66,26 @@ async function run() {
       res.send(result);
     });
 
+    app.patch("/myToys/:id", async (req, res) => {
+        const id = req.params.id;
+        const body = req.body;
+        console.log(body);
+        const filter = { _id: new ObjectId(id) }; 
+        const updateDoc = {
+          $set: {
+            price: body.price,
+            quantity: body.quantity,
+            description: body.description,
+          },
+        };
+
+        const result = await toysCollection.updateOne(filter, updateDoc);
+        res.send(result);
+    });
+
+
+    
+
     app.delete('/myToys/:id', async(req, res) => {
 
       const id = req.params.id
@@ -74,7 +95,6 @@ async function run() {
       res.send(result)
 
     })
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
