@@ -94,6 +94,21 @@ async function run() {
       res.send(result);
   });
 
+  // sort
+  app.get("/allToys/:email/:sortOrder", async (req, res) => {
+    const { email, sortOrder } = req.params;
+    let sortQuery = { price: 1 };
+  
+    if (sortOrder === "descending") {
+      sortQuery = { price: -1 };
+    }
+  
+    const toys = await toysCollection.find({ sellerEmail: email }).sort(sortQuery).toArray();
+    res.send(toys);
+  });
+  
+  
+
     app.delete('/myToys/:id', async(req, res) => {
 
       const id = req.params.id
