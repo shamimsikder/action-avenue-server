@@ -97,7 +97,7 @@ async function run() {
   // sort
   app.get("/allToys/:email/:sortOrder", async (req, res) => {
     const { email, sortOrder } = req.params;
-    let sortQuery = { price: 1 };
+    const sortQuery = { price: 1 };
   
     if (sortOrder === "descending") {
       sortQuery = { price: -1 };
