@@ -83,8 +83,16 @@ async function run() {
         res.send(result);
     });
 
-
-    
+    app.get("/searchToys/:text", async (req, res) => {
+      const text = req.params.text;
+      const result = await toysCollection.find({
+          $or: [
+              { name: { $regex: text, $options: "i" } },
+          ]
+      }).toArray();
+  
+      res.send(result);
+  });
 
     app.delete('/myToys/:id', async(req, res) => {
 
